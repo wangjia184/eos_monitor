@@ -23,7 +23,7 @@
   <div id="bar-container" style="width:100%; height:6000px;"></div>
 
   <script>
-    $.getJSON('/api/aggregation_per_day', function (array) {
+    $.getJSON('/api/aggregation_per_day?_=' + (new Date()).getTime(), function (array) {
 
         createStockChart(array);
         createBarChart(array);
@@ -93,13 +93,26 @@
             }
         });
 
+
+        var start = Date.UTC(2017, 6, 2);
+        var stop = Date.UTC(2018, 5, 15);
+        var time = moment().subtract(1, 'months').unix() * 1000;
+        if( start < time ) start = time;
+        time = moment().add(1, 'months').unix() * 1000;
+        if( stop > time ) stop = time;
+
         // create the chart
         Highcharts.stockChart('container', {
             credits: {
                 enabled: false
             },
             chart: {
-                alignTicks: false
+                alignTicks: false,
+                events: {
+                  load: function() {
+                    this.xAxis[0].setExtremes( start, stop );
+                  }
+                }
             },
 
             rangeSelector: {
