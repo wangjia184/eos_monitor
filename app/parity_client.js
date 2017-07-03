@@ -48,7 +48,7 @@ exports.start = function(dataCallback, addr, startBlockNumber, topic){
 				Amount : amount,
 				Window : wnd
 			});
-			if( outputArray.length > 10 ){
+			if( outputArray.length > 0 ){
 				callback(outputArray);
 				outputArray = [];
 			}
